@@ -4,11 +4,13 @@ w0 = random.uniform(-1,1)
 w1 = random.uniform(-1,1)
 w2 = random.uniform(-1,1)
 
+print(w0)
+
 learning_rate = 0.01
 
 #the 1 is the bias
-inputs = [5,2,1]
-target = 2
+inputs = [10,6,1]
+target = 50
 
 for i in range(1000):
     sum1 = w0*inputs[0] + w1*inputs[1] + w2*inputs[2]
