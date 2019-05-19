@@ -37,3 +37,8 @@ print()
 print(str(w0)+'  '+str(w1))#+'   '+str(w2))
 t2 = time.clock() - t1
 print("This finished in " + str(t2) + " seconds")
+
+y = float(input("Enter a number  "))
+y1 = float(input("Enter a number  "))
+
+print(((y*w0)+(y1*w1))/2)
