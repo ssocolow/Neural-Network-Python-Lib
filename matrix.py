@@ -13,13 +13,19 @@ class Matrix:
                 #filling the matrix with zeros as a default
                 self.matrix[i].append(0)
 
-    #for matrix scalar multiplication
-    def scalar_mult(self, n):
-        for i in range(self.rows):
-            for j in range(self.cols):
-                self.matrix[i][j] *= n
+    #for matrix multiplied by scalar or matrix multiplied by matrix
+    def mult(self, n):
+        if type(n) == Matrix:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.matrix[i][j] *= n.matrix[i][j]
+        else:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.matrix[i][j] *= n
 
-    #for matrix plus matrix and matrix plus scalar
+
+    #for matrix plus scalar or matrix plus matrix
     #only changes this matrix
     def add(self, n):
         if type(n) == Matrix:
@@ -37,6 +43,10 @@ class Matrix:
         for i in range(self.rows):
             for j in range(self.cols):
                 self.matrix[i][j] = random.uniform(lower, upper)
+
+    #adding a printing functionality for easier debugging
+    def print(self):
+        print(self.matrix)
 
 p = Matrix(3, 2)
 u = Matrix(3, 2)
