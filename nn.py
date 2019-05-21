@@ -18,10 +18,10 @@ class NeuralNetwork:
             for j in range(self.shape[i][0]):
                 self.weights_arrays[i].append(random.uniform(-1, 1))
 
-    def print(self):
-        n = len(self.shape)
-        for i in range(n):
-            print(self.shape[i])
+    # def print(self):
+    #     n = len(self.shape)
+    #     for i in range(n):
+    #         print(self.shape[i])
 
 p = NeuralNetwork([[2],[3],[4],[9],[2]])
 print(p.weights_arrays)
