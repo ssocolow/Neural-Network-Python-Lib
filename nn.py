@@ -1,8 +1,6 @@
 import matrix2d
 import math
 
-inputs = 0
-
 class NeuralNetwork:
     def __init__(self, shape):
 
@@ -49,12 +47,13 @@ class NeuralNetwork:
     def feedforward(self, input_arr):
         #turn the input array into an input matrix
         inputs = matrix2d.Matrix.vectorize(input_arr)
-        #iterate over every time we need to do O = a(W * I + B)
+        #iterate over every time we need to do Output = activation_function(Weight_matrix * Input_matrix + Bias_vector)
         for i in range(self.len_selfshape - 1):
             weighted_sum = matrix2d.Matrix.multiply(self.weight_matrices[i], inputs)
             weighted_sum.add(self.bias_matrices[i])
             inputs = weighted_sum.map(self.activation_function)
-
+        #every loop iteration, the inputs to the layer becomes the inputs to the next layer in the network
+        #then the last inputs are inputs to the output
         return inputs
 
 
