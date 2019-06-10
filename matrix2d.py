@@ -13,6 +13,20 @@ class Matrix:
                 #filling the matrix with zeros as a default
                 self.data[i].append(0)
 
+
+    #vectorizes an input array so matrix multiplication can be done because matrix multiplication expects 2 matrices
+    @staticmethod
+    def vectorize(input_array):
+        rows = len(input_array)
+
+        vector = Matrix(rows, 1)
+
+        for i in range(rows):
+            vector.data[i][0] = input_array[i]
+
+        return vector
+
+
     #for matrix multiplied by matrix (matrix multiplication)
     #returns a new result matrix
     @staticmethod
@@ -94,10 +108,13 @@ class Matrix:
             for j in range(self.cols):
                 self.data[i][j] = random.uniform(lower, upper)
 
+    #returns a new matrix
     def map(self, fn):
+        result = Matrix(self.rows, self.cols)
         for i in range(self.rows):
             for j in range(self.cols):
-                self.data[i][j] = fn(self.data[i][j])
+                result.data[i][j] = fn(self.data[i][j])
+        return result
 
     #sets the matrix to the values in n
     def setMatrix(self, n):
@@ -117,13 +134,13 @@ class Matrix:
     def print(self):
         print(self.data)
 
-p = Matrix(2,2)
-r = Matrix(2,2)
+# p = Matrix(2,2)
+# r = Matrix(2,2)
 
-p.setMatrix([[2,3],[3,4]])
-r.setMatrix([[1,0],[2,6]])
+# p.setMatrix([[2,3],[3,4]])
+# r.setMatrix([[1,0],[2,6]])
 
-p.print()
-x = Matrix.multiply(p, r)
+# p.print()
+# x = Matrix.multiply(p, r)
 
-x.print()
+# x.print()
