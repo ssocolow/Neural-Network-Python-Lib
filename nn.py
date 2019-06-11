@@ -8,8 +8,11 @@ class NeuralNetwork:
         self.shape = shape
 
         #store an activation function
+        #ADD YOUR OWN ACTIVATION FUNCTION BELOW THEN CHANGE self.activation_function to be equal to the name of your activation function
         def sigmoid(x):
             return 1 / (1 + math.exp(-x))
+        def twice(x):
+            return x*2
 
         self.activation_function = sigmoid
         #initialize the container weights array
@@ -30,15 +33,15 @@ class NeuralNetwork:
             #the weight matrix has rows equal to the number of nodes in the next layer, and columns equal to the number of inputs coming in
             self.weight_matrices.append(matrix2d.Matrix(self.shape[i + 1][0], self.shape[i][0]))
 
-            #set random weights between 1 and -1
-            self.weight_matrices[i].randomize(1,1)
+            #set random weights between -1 and 1
+            self.weight_matrices[i].randomize(-1,1)
 
             #add a bias vector to the bias_matrices container array
             #should have rows equal to the number of neurons in the next layer and one collumn (because it is a vector)
             self.bias_matrices.append(matrix2d.Matrix(self.shape[i + 1][0], 1))
 
-            #set random biases between 1 and -1
-            self.bias_matrices[i].randomize(1,1)
+            #set random biases between -1 and 1
+            self.bias_matrices[i].randomize(-1,1)
 
 
 
