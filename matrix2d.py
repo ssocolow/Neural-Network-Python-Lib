@@ -101,6 +101,20 @@ class Matrix:
                 for j in range(self.cols):
                     self.data[i][j] += n
 
+    #returns a new matrix
+    #does this matrix minus another matrix
+    def subtract(self, n):
+        result = Matrix(self.rows, self.cols)
+        if type(n) == Matrix:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    result.data[i][j] = self.data[i][j] - n.data[i][j]
+        else:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    result.data[i][j] = self.data[i][j] - n
+        return result
+
     #randomizes the numbers in the matrix to a floating point value between the two arguments
     #you can set the matrix with all equal values if you put in the same number for both parameters
     def randomize(self, lower, upper):
