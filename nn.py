@@ -52,6 +52,9 @@ class NeuralNetwork:
         for i in range(self.len_selfshape - 1):
             self.weight_matrices_transposed.append(matrix2d.Matrix.transpose(self.weight_matrices[i]))
 
+        #we are reversing the transposed weight matrices array because we need to iterate backwards through the network
+        #we need to use the last weights of the network first so we can backpropagate the error
+        self.weight_matrices_transposed.reverse()
 
     #lots of matrix math
     #takes the inputs and feeds it through the network
@@ -70,14 +73,40 @@ class NeuralNetwork:
         #every loop iteration, the inputs to the layer becomes the inputs to the next layer in the network
         #then the last inputs are inputs to the output
         #returns a two dimensional array with all the data of the matrix
-        return inputs.data
+        return inputs.matrix_vector_to_array()
 
     #the train function should use backpropagation and gradient descent to change the weights of the network
     #useful for supervised learning (where you have labels for data)
     #arguments should both be arrays and one dimensional (vectors)
     def train(self, inputs, targets):
+
+        #turn the input array into an input matrix
+        inputs = matrix2d.Matrix.vectorize(inputs)
+
+        #make an array to contain all of the outputs of all of the layers
+        #this is needed for calculating the change in weights
+        layer_outputs = []
+
+        #iterate over every time we need to do Output = activation_function(Weight_matrix * Input_matrix + Bias_vector)
+        #we need to do this every gap between layers (which is the numbers of layers we have - 1)
+        for i in range(self.len_selfshape - 1):
+
+            weighted_sum = matrix2d.Matrix.multiply(self.weight_matrices[i], inputs)
+
+            weighted_sum.add(self.bias_matrices[i])
+
+            inputs = weighted_sum.map(self.activation_function)
+
+            #get that layer's output
+            layer_outputs.append(inputs)
+
+        #set a learning rate
+        #the learning rate might want to be set with a function argument or in the initialization of a neural network object
+        lr = 0.01
+
         #get the network's guess
-        outputs = self.feedforward(inputs)
+        #this is the last mapped weighted sum from the feedforward step
+        outputs = inputs
 
         #make an array to store all of the error values for all the nodes
         errors = []
@@ -85,14 +114,22 @@ class NeuralNetwork:
         #make the targets and the neural networks' guess into matrices so we can subtract them
         targets_matrix = matrix2d.Matrix.vectorize(targets)
         #the feedforward function returns a two dimensional array, and the vectorize function expects a one dimensional array
-        outputs_matrix = matrix2d.Matrix.vectorize(outputs[0])
+        outputs_matrix = matrix2d.Matrix.vectorize(outputs)
 
         #error = targets - guess
         errors.append(targets_matrix.subtract(outputs_matrix))
+
+
         for i in range(self.len_selfshape - 1):
             #calculate all of the error matrices for all of the nodes
-            pass
+            #the transposed weight matrix times the error matrix of the forward layer equals the error matrix of those nodes
+            error = matrix2d.Matrix.multiply(self.weight_matrices_transposed[i], errors[i])
+            errors.append(error)
         return errors
+
+
+
+        #REMEMBER TO CHANGE THE TRANSPOSED WIEGHT MATRICES AFTER NEW WEIGHTS ARE CALCULATED
 
 
     #prints the shape of the neural net and all of its weights and biases and activation function
@@ -110,10 +147,10 @@ class NeuralNetwork:
         print("Activation function: " + str(self.activation_function))
 
 #testing and debugging
-p = NeuralNetwork([[3], [2], [1]])
+p = NeuralNetwork([[2], [2], [2]])
 #p.print()
-print()
-error = p.train([2,2,2], [8])
-output = p.feedforward([2,2,2])
+err = p.train([2,2], [8,6])
+output = p.feedforward([2,2])
 print("Output: " + str(output))
-print("Error: " + str(error))
+for i in range(p.len_selfshape - 1):
+    print("Error: " + str(err[i].data))

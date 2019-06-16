@@ -26,6 +26,13 @@ class Matrix:
 
         return vector
 
+    #takes a matrix in vector form with data like [[42],[42]] and returns [42,42]
+    def matrix_vector_to_array(self):
+        result = []
+        for i in range(self.rows):
+            result.append(self.data[i][0])
+        return result
+
 
     #for matrix multiplied by matrix (matrix multiplication)
     #returns a new result matrix
