@@ -68,12 +68,17 @@ class Matrix:
             return None
 
 
-    #for scalar multiplication
+    #for elementwise and scalar multiplication
     #doesn't return anything but changes the matrix itself
-    def scale(self, n):
-        for i in range(self.rows):
-            for j in range(self.cols):
-                self.data[i][j] *= n
+    def multiply_elementwise(self, n):
+        if type(n) == Matrix:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.data[i][j] *= n.data[i][j]
+        else:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.data[i][j] *= n
 
     #this is a static method (can be called with Matrix.transpose(n))
     #returns the transposed matrix
@@ -137,6 +142,14 @@ class Matrix:
                 result.data[i][j] = fn(self.data[i][j])
         return result
 
+    @staticmethod
+    def static_map(m, fn):
+        result = Matrix(m.rows, m.cols)
+        for i in range(m.rows):
+            for j in range(m.cols):
+                result.data[i][j] = fn(m.data[i][j])
+        return result
+
     #sets the matrix to the values in n
     def setMatrix(self, n):
         #store these values so we don't need to keep calling the len function
@@ -154,14 +167,3 @@ class Matrix:
     #adding a printing functionality for easier debugging
     def print(self):
         print(self.data)
-
-# p = Matrix(2,2)
-# r = Matrix(2,2)
-
-# p.setMatrix([[2,3],[3,4]])
-# r.setMatrix([[1,0],[2,6]])
-
-# p.print()
-# x = Matrix.multiply(p, r)
-
-# x.print()
