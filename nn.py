@@ -26,7 +26,7 @@ class NeuralNetwork:
 
         #set a learning rate
         #the learning rate might want to be set with a function argument or in the initialization of a neural network object
-        self.lr = 1000
+        self.lr = 0.1
 
         #initialize the container weights array
         #this will store all of the matrices needed (from the matrix2d.py library)

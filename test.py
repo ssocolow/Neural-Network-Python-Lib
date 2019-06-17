@@ -3,8 +3,12 @@ import nn
 nn = nn.NeuralNetwork([[2],[2],[2]])
 
 inputs = [2,2]
-targets = [22,9]
+targets = [0.6,0]
 
-for i in range(100):
-    error = nn.train(inputs,targets)
-    print(error[0].data)
+output = nn.feedforward(inputs)
+print(output)
+
+for i in range(10000):
+    nn.train(inputs,targets)
+output = nn.feedforward(inputs)
+print(output)
