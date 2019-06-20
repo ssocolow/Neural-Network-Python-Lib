@@ -129,15 +129,14 @@ class NeuralNetwork:
 
         #get the network's guess
         #this is the last mapped weighted sum from the feedforward step
-        outputs = inputs.matrix_vector_to_array()
+        #the difference from this to the feedforward step is that we want to keep it as a matrix
+        outputs_matrix = inputs
 
         #make an array to store all of the error values for all the nodes
         errors = []
 
-        #make the targets and the neural networks' guess into matrices so we can subtract them
+        #make the targets into a matrix so we can subtract the neural network's guess from it
         targets_matrix = matrix2d.Matrix.vectorize(targets)
-        #the feedforward function returns a two dimensional array, and the vectorize function expects a one dimensional array
-        outputs_matrix = matrix2d.Matrix.vectorize(outputs)
 
         #error = targets - guess
         errors.append(targets_matrix.subtract(outputs_matrix))
@@ -145,24 +144,27 @@ class NeuralNetwork:
         #calculate all of the error matrices for all of the nodes and save them in the errors array
         #the transposed weight matrix times the error matrix of the forward layer equals the error matrix of this layer
         for i in range(self.len_selfshape - 1):
-            error = matrix2d.Matrix.multiply(self.weight_matrices_transposed[i], errors[i])
-            errors.append(error)
+            errors.append(matrix2d.Matrix.multiply(self.weight_matrices_transposed[i], errors[i]))
 
         #calculate the change in weight matrices
         #change in weight matrix = learning rate times error vector of the layer in front times the derivative of the activation function times the outputs of the behind layer
-        #this can be optimized more by adding the change in weight matrices to the weight matrices in the same loop but the weight matrices should be reversed
         for i in range(self.len_selfshape - 1):
 
+            print("Layer ouput: " + str(layer_outputs[i].data))
             #calculate the gradient
             gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
             gradient.multiply_elementwise(errors[i])
             gradient.multiply_elementwise(self.lr)
 
             #calculate the change in weights
+            print("Layer ouputs transposed: " + str(layer_outputs_transposed[i].data))
             weight_deltas = matrix2d.Matrix.multiply(gradient, layer_outputs_transposed[i])
 
             #the weight_matrices start from the inputs to the first hidden layer
             #we are going backward through the network
+            print(self.weight_matrices[self.len_selfshape - (2 + i)].data)
+            #the self.weight_matrices is working as it should, but the weight_deltas are off, maybe they are from a different layer
+            print(weight_deltas.data)
             self.weight_matrices[self.len_selfshape - (2 + i)].add(weight_deltas)
 
         #REMEMBER TO CHANGE THE TRANSPOSED WIEGHT MATRICES AFTER NEW WEIGHTS ARE CALCULATED
