@@ -2,39 +2,38 @@ import matrix2d
 import math
 
 class NeuralNetwork:
-    def __init__(self, shape):
+    def __init__(self, shape, learning_rate = 0.1, data = [[],[]]):
 
         #get the shape as a two dimensional array
         self.shape = shape
 
         #store an activation function
         #ADD YOUR OWN ACTIVATION FUNCTION BELOW THEN CHANGE self.activation_function to be equal to the name of your activation function
-        #IF YOU WANT TO DO BACKPROPAGATION AND GRADIENT DESCENT WITH YOUR OWN ACTIVATION FUNCTION THEN PUT THE DERIVATIVE OF YOUR ACTIVATION FUNCTION BELOW EQUAL TO self.activation_function_derivative
         def sigmoid(x):
             return 1 / (1 + math.exp(-x))
 
-        #this should really be return sigmoid(x) * (1- sigmoid(x))
-        #but the output of each layer has already been fed through the sigmoid function
-        def dsigmoid(y):
-            return y * (1 - y)
+        # #this should really be return sigmoid(x) * (1- sigmoid(x))
+        # #but the output of each layer has already been fed through the sigmoid function
+        # def dsigmoid(y):
+        #     return y * (1 - y)
 
-        def twice(x):
-            return x*2
+        # def twice(x):
+        #     return x*2
 
         self.activation_function = sigmoid
-        self.activation_function_derivative = dsigmoid
+        # self.activation_function_derivative = dsigmoid
 
-        #set a learning rate
-        #the learning rate might want to be set with a function argument or in the initialization of a neural network object
-        self.lr = 0.1
+        #set the learning rate
+        #default is 0.1
+        self.lr = learning_rate
 
         #initialize the container weights array
         #this will store all of the matrices needed (from the matrix2d.py library)
-        self.weight_matrices = []
+        self.weight_matrices = data[0]
 
         #initialize the container bias array
         #this will store all of the biases for all of the neurons (organized in matrices)
-        self.bias_matrices = []
+        self.bias_matrices = data[1]
 
         #get the length of self.shape so we don't need to repeatedly call the len function
         self.len_selfshape = len(self.shape)
@@ -43,23 +42,25 @@ class NeuralNetwork:
         self.len_selfshape_minus_1 = self.len_selfshape - 1
         self.len_selfshape_minus_2 = self.len_selfshape - 2
 
-        #interate over every neuron layer in the neural net
-        for i in range(self.len_selfshape_minus_1):
+        if data == [[],[]]:
+            #interate over every neuron layer in the neural net
+            for i in range(self.len_selfshape_minus_1):
+                #add a matrix to the weights matrix
+                #keep in mind that it is added to the end of the bigger array
+                #the weight matrix has rows equal to the number of nodes in the next layer, and columns equal to the number of inputs coming in
+                self.weight_matrices.append(matrix2d.Matrix(self.shape[i + 1][0], self.shape[i][0]))
 
-            #add a matrix to the weights matrix
-            #keep in mind that it is added to the end of the bigger array
-            #the weight matrix has rows equal to the number of nodes in the next layer, and columns equal to the number of inputs coming in
-            self.weight_matrices.append(matrix2d.Matrix(self.shape[i + 1][0], self.shape[i][0]))
+                #set random weights between -1 and 1
+                self.weight_matrices[i].randomize(-1,1)
 
-            #set random weights between -1 and 1
-            self.weight_matrices[i].randomize(-1,1)
+                #add a bias vector (a Matrix object) to the bias_matrices container array
+                #should have rows equal to the number of neurons in the next layer and one column (because it is a vector)
+                self.bias_matrices.append(matrix2d.Matrix(self.shape[i + 1][0], 1))
 
-            #add a bias vector (a Matrix object) to the bias_matrices container array
-            #should have rows equal to the number of neurons in the next layer and one column (because it is a vector)
-            self.bias_matrices.append(matrix2d.Matrix(self.shape[i + 1][0], 1))
-
-            #set random biases between -1 and 1
-            self.bias_matrices[i].randomize(-1,1)
+                #set random biases between -1 and 1
+                self.bias_matrices[i].randomize(-1,1)
+        else:
+            pass
 
         #create an array with all of the transposed weight matrices(rows of original matrix = columns of transposed matrix)
         #we are doing it once so that we don't have to keep transposing all of the weight matrices whenever we call the train function
@@ -147,9 +148,12 @@ class NeuralNetwork:
         #calculate the change in weight matrices
         #going backwards through the network
         #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function then matrix multiplied by the transposed outputs of the behind layer
+        #I am not going to use the derivative and ignore multiplying by it because I don't really understand it
+        #The error tells us which way the weight should be adjusted, so I am just using that
         for i in range(self.len_selfshape_minus_1):
-            #calculate the gradient
-            gradient = matrix2d.Matrix.static_map(errors[i], self.activation_function_derivative)
+            # calculate the gradient
+            # gradient = matrix2d.Matrix.static_map(errors[i], self.activation_function_derivative)
+            gradient = errors[i]
             gradient.multiply_elementwise(self.lr)
 
             #calculate the change in weights
@@ -168,6 +172,7 @@ class NeuralNetwork:
         self.weight_matrices_transposed.reverse()
 
         return errors[0].matrix_vector_to_array()
+
 
 
     #prints the shape of the neural net and all of its weights and biases and activation function
