@@ -142,6 +142,7 @@ class Matrix:
                 result.data[i][j] = fn(self.data[i][j])
         return result
 
+    #returns a new matrix
     @staticmethod
     def static_map(m, fn):
         result = Matrix(m.rows, m.cols)

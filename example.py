@@ -11,18 +11,20 @@ example_neural_network = nn.NeuralNetwork([[2],[4],[2]])
 
 #have your inputs and targets in an array
 #if you want to use backpropagation and gradient descent
-inputs = [2,2]
-targets = [0.6,0.1]
+inputs = [2, 2]
+targets = [0.6, 0.1]
 
 #feed forward the inputs and put the output in the variable called output
 output = example_neural_network.feedforward(inputs)
-#print(output)
+print(output)
 
 #train the network 10000 times on the inputs and the targets
 for i in range(10000):
-    example_neural_network.train(inputs,targets)
+    x = example_neural_network.train(inputs,targets)
+    if i == 9999:
+        print(x)
 
 #check what the network outputs after it has been trained
 #this should be close to the targets
 output = example_neural_network.feedforward(inputs)
-#print(output)
+print(output)
