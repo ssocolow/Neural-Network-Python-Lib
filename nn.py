@@ -148,7 +148,7 @@ class NeuralNetwork:
         #calculate the change in weight matrices
         #going backwards through the network
         #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function then matrix multiplied by the transposed outputs of the behind layer
-        #I am not going to use the derivative and ignore multiplying by it because I don't really understand it
+        #I am not going to use the derivative and will ignore multiplying by it because I don't really understand it
         #The error tells us which way the weight should be adjusted, so I am just using that
         for i in range(self.len_selfshape_minus_1):
             # calculate the gradient
