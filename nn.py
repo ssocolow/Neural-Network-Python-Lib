@@ -7,6 +7,13 @@ class NeuralNetwork:
         #get the shape as a two dimensional array
         self.shape = shape
 
+        #get the length of self.shape so we don't need to repeatedly call the len function
+        self.len_selfshape = len(self.shape)
+
+        #save these so we don't need to keep performing operations which will always have constant value
+        self.len_selfshape_minus_1 = self.len_selfshape - 1
+        self.len_selfshape_minus_2 = self.len_selfshape - 2
+
         #store an activation function
         #ADD YOUR OWN ACTIVATION FUNCTION BELOW THEN CHANGE self.activation_function to be equal to the name of your activation function
         def sigmoid(x):
@@ -29,18 +36,19 @@ class NeuralNetwork:
 
         #initialize the container weights array
         #this will store all of the matrices needed (from the matrix2d.py library)
-        self.weight_matrices = data[0]
+        self.weight_matrices = []
+        #if there are saved weights, they are added here
+        if data != [[],[]]:
+            for i in range(self.len_selfshape_minus_1):
+                self.weight_matrices.append(matrix2d.Matrix.array_to_matrix(data[0][i]))
 
         #initialize the container bias array
         #this will store all of the biases for all of the neurons (organized in matrices)
-        self.bias_matrices = data[1]
-
-        #get the length of self.shape so we don't need to repeatedly call the len function
-        self.len_selfshape = len(self.shape)
-
-        #save these so we don't need to keep performing operations which will always have constant value
-        self.len_selfshape_minus_1 = self.len_selfshape - 1
-        self.len_selfshape_minus_2 = self.len_selfshape - 2
+        self.bias_matrices = []
+        #if there are saved biases, they are added here
+        if data != [[],[]]:
+            for i in range(self.len_selfshape_minus_1):
+                self.bias_matrices.append(matrix2d.Matrix.array_to_matrix(data[1][i]))
 
         if data == [[],[]]:
             #interate over every neuron layer in the neural net

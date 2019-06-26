@@ -151,6 +151,14 @@ class Matrix:
                 result.data[i][j] = fn(m.data[i][j])
         return result
 
+    #takes a 2d array
+    #returns a matrix
+    @staticmethod
+    def array_to_matrix(array):
+        result = Matrix(len(array), len(array[0]))
+        result.setMatrix(array)
+        return result
+
     #sets the matrix to the values in n
     def setMatrix(self, n):
         #store these values so we don't need to keep calling the len function
