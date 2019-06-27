@@ -7,7 +7,7 @@ import nn
 #the 2's and 4 represent two nodes in the input and the output layer and four nodes in the hidden layer
 #you can add more layers by adding an array to the larger array with a number in it for the number of nodes you want like [[2],[3],[3],[4]]
 #the first 2 of this new network would mean the network would expect two inputs and the last four means the network would output four outputs
-example_neural_network = nn.NeuralNetwork([[2],[4],[2]])
+example_neural_network = nn.NeuralNetwork([[2],[3],[2]], learning_rate = 0.01)
 
 #have your inputs and targets in an array which match the number of inputs and outputs specificed in the creation of the neural network
 #if you want to use backpropagation and gradient descent in supervised learning
