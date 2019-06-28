@@ -80,6 +80,12 @@ class Matrix:
                 for j in range(self.cols):
                     self.data[i][j] *= n
 
+    #adding a copy function
+    def copy(self):
+        copy = Matrix(self.rows, self.cols)
+        copy.setMatrix(self.data)
+        return copy
+
     #this is a static method (can be called with Matrix.transpose(n))
     #returns the transposed matrix
     @staticmethod

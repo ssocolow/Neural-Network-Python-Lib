@@ -21,14 +21,14 @@ class NeuralNetwork:
 
         # #this should really be return sigmoid(x) * (1- sigmoid(x))
         # #but the output of each layer has already been fed through the sigmoid function
-        # def dsigmoid(y):
-        #     return y * (1 - y)
+        def dsigmoid(y):
+            return y * (1 - y)
 
         # def twice(x):
         #     return x*2
 
         self.activation_function = sigmoid
-        # self.activation_function_derivative = dsigmoid
+        self.activation_function_derivative = dsigmoid
 
         #set the learning rate
         #default is 0.1
@@ -111,6 +111,9 @@ class NeuralNetwork:
         #make an array to contain all of the transposed outputs of the layers except the last layer
         #needed for calculating change in weights
         layer_outputs_transposed = []
+        #layer_outputs will store the outputs of all of the layers except for the input layer
+        #we will use this with the derivative of sigmoid to help calculate the change in weights
+        layer_outputs = []
         #get the ouput of the input layer (which is the input) and transpose it
         layer_outputs_transposed.append(matrix2d.Matrix.transpose(inputs))
 
@@ -124,6 +127,9 @@ class NeuralNetwork:
 
             inputs = weighted_sum.map(self.activation_function)
 
+            #save the layer outputs if it isn't the first inputs
+            layer_outputs.append(inputs)
+
             #save the transposed version if it isn't the final output
             #we don't need the final ouput transposed for the backpropagation
             #we only need the transposed outputs of the layers before
@@ -134,7 +140,7 @@ class NeuralNetwork:
                 pass
 
         #the layer outputs and the transposed versions need to start with the last outputs for a backpropagation loop
-        #layer_outputs.reverse()
+        layer_outputs.reverse()
         layer_outputs_transposed.reverse()
 
         #make an array to store all of the error values for all the nodes
@@ -150,21 +156,21 @@ class NeuralNetwork:
 
         #calculate all of the error matrices for all of the layers and save them in the errors array
         #the transposed weight matrix times the error matrix (vector) of the forward layer equals the error matrix of this layer
-        for i in range(self.len_selfshape_minus_1):
+        for i in range(self.len_selfshape_minus_2):
             errors.append(matrix2d.Matrix.multiply(self.weight_matrices_transposed[i], errors[i]))
 
         #calculate the change in weight matrices and the change in bias matrices
         #going backwards through the network
-        #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function then matrix multiplied by the transposed outputs of the behind layer
+        #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function with this layer's outputs then matrix multiplied by the transposed outputs of the behind layer
         #change in bias matrix = learning rate scalar times the error of the layer we are on
         #I am not going to use the derivative and will ignore multiplying by it because I don't really understand it and it will just scale the gradient and not change the sign
         #The error tells us which way the weight should be adjusted, so I am just using that
         for i in range(self.len_selfshape_minus_1):
-            # calculate the gradient
-            # gradient = matrix2d.Matrix.static_map(errors[i], self.activation_function_derivative)
-            gradient = errors[i]
+            #calculate the gradient
+            gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
+            #gradient = errors[i].copy()
             gradient.multiply_elementwise(self.lr)
-
+            gradient.multiply_elementwise(errors[i])
             #the change in biases is the gradient here
             self.bias_matrices[self.len_selfshape - (2 + i)].add(gradient)
 
