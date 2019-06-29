@@ -162,15 +162,15 @@ class NeuralNetwork:
         #calculate the change in weight matrices and the change in bias matrices
         #going backwards through the network
         #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function with this layer's outputs then matrix multiplied by the transposed outputs of the behind layer
-        #change in bias matrix = learning rate scalar times the error of the layer we are on
-        #I am not going to use the derivative and will ignore multiplying by it because I don't really understand it and it will just scale the gradient and not change the sign
-        #The error tells us which way the weight should be adjusted, so I am just using that
+        #change in bias matrix = learning rate scalar times error vector of this layer elementwise multiplied by the derivative of the activation function with this layer's outputs
+        #https://github.com/ProWhalen/AndrewNg-ML/blob/master/Make%20Your%20Own%20Neural%20Network.pdf has a lot more information and a much better explanation
         for i in range(self.len_selfshape_minus_1):
             #calculate the gradient
             gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
-            #gradient = errors[i].copy()
+
             gradient.multiply_elementwise(self.lr)
             gradient.multiply_elementwise(errors[i])
+
             #the change in biases is the gradient here
             self.bias_matrices[self.len_selfshape - (2 + i)].add(gradient)
 
@@ -179,7 +179,6 @@ class NeuralNetwork:
 
             #the weight_matrices start from the inputs to the first hidden layer
             #we are going backward through the network
-            #the self.weight_matrices is working as it should, but the weight_deltas are off, maybe they are from a different layer
             self.weight_matrices[self.len_selfshape - (2 + i)].add(weight_deltas)
 
         #REMEMBER TO CHANGE THE TRANSPOSED WIEGHT MATRICES AFTER NEW WEIGHTS ARE CALCULATED
