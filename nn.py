@@ -166,10 +166,17 @@ class NeuralNetwork:
         #https://github.com/ProWhalen/AndrewNg-ML/blob/master/Make%20Your%20Own%20Neural%20Network.pdf has a lot more information and a much better explanation
         for i in range(self.len_selfshape_minus_1):
             #calculate the gradient
-            gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
+            gradient = errors[i].copy()
 
+            #uncomment this to use the derivative method
+            #gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
+            #and comment the next line
             gradient.multiply_elementwise(self.lr)
-            gradient.multiply_elementwise(errors[i])
+
+            #uncomment this to use the derivative method
+            #gradient.multiply_elementwise(errors[i])
+            #and comment the next line
+            gradient.multiply_elementwise(layer_outputs[i])
 
             #the change in biases is the gradient here
             self.bias_matrices[self.len_selfshape - (2 + i)].add(gradient)
