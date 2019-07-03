@@ -7,7 +7,7 @@ import random
 #takes an array of arrays for argument
 #the 2, 4 and 1 represent two nodes in the input and 4 nodes in the output layer and 1 node in the hidden layer
 #you can add more layers by adding an array to the larger array with a number in it for the number of nodes you want like [[2],[3],[3],[4]]
-#the learning rate is set to 0.2 (0.1 is default)
+#you can set the learning rate and the network's weights and biases after you give it its shape (0.1 is default for learning rate)
 example_neural_network = nn.NeuralNetwork([[2],[4],[1]], learning_rate = 0.2)
 
 #have your inputs and targets in an array which match the number of inputs and outputs specificed in the initialization of the neural network

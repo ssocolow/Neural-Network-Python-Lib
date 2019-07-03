@@ -165,19 +165,23 @@ class NeuralNetwork:
         #change in bias matrix = learning rate scalar times error vector of forward layer elementwise multiplied by the derivative of the activation function with forward layer
         #https://github.com/ProWhalen/AndrewNg-ML/blob/master/Make%20Your%20Own%20Neural%20Network.pdf has a lot more information and a much better explanation
         for i in range(self.len_selfshape_minus_1):
+            #my method for gradient descent and calculating the gradient
             #gradient = errors[i].copy()
-            #calculate the gradient
-            
-            gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
+            #gradient.multiply_elementwise(layer_outputs[i])
             #gradient.multiply_elementwise(self.lr)
 
+            #maping the outputs of the layer in front with the derivative
+            gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
+            #scaling by the learning rate
+            gradient.multiply_elementwise(self.lr)
+            #multiply by the errors of the layer in front
             gradient.multiply_elementwise(errors[i])
-            #gradient.multiply_elementwise(layer_outputs[i])
 
             #the change in biases is the gradient here
             self.bias_matrices[self.len_selfshape - (2 + i)].add(gradient)
 
             #calculate the change in weights
+            #multiplying the gradient calculated above by the transposed outputs of the layer behind
             weight_deltas = matrix2d.Matrix.multiply(gradient, layer_outputs_transposed[i])
 
             #the weight_matrices start from the inputs to the first hidden layer
