@@ -161,22 +161,18 @@ class NeuralNetwork:
 
         #calculate the change in weight matrices and the change in bias matrices
         #going backwards through the network
-        #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function with this layer's outputs then matrix multiplied by the transposed outputs of the behind layer
-        #change in bias matrix = learning rate scalar times error vector of this layer elementwise multiplied by the derivative of the activation function with this layer's outputs
+        #change in weight matrix = learning rate scalar times error vector of the layer in front elementwise multiplied by the derivative of the activation function with forward layer's outputs then matrix multiplied by the transposed outputs of the behind layer
+        #change in bias matrix = learning rate scalar times error vector of forward layer elementwise multiplied by the derivative of the activation function with forward layer
         #https://github.com/ProWhalen/AndrewNg-ML/blob/master/Make%20Your%20Own%20Neural%20Network.pdf has a lot more information and a much better explanation
         for i in range(self.len_selfshape_minus_1):
+            #gradient = errors[i].copy()
             #calculate the gradient
-            gradient = errors[i].copy()
+            
+            gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
+            #gradient.multiply_elementwise(self.lr)
 
-            #uncomment this to use the derivative method
-            #gradient = matrix2d.Matrix.static_map(layer_outputs[i], self.activation_function_derivative)
-            #and comment the next line
-            gradient.multiply_elementwise(self.lr)
-
-            #uncomment this to use the derivative method
-            #gradient.multiply_elementwise(errors[i])
-            #and comment the next line
-            gradient.multiply_elementwise(layer_outputs[i])
+            gradient.multiply_elementwise(errors[i])
+            #gradient.multiply_elementwise(layer_outputs[i])
 
             #the change in biases is the gradient here
             self.bias_matrices[self.len_selfshape - (2 + i)].add(gradient)
