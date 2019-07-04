@@ -5,7 +5,7 @@ import random
 
 #create the neural network to solve the XOR problem
 #takes an array of arrays for argument
-#the 2, 4 and 1 represent two nodes in the input and 4 nodes in the output layer and 1 node in the hidden layer
+#the 2, 4 and 1 represent two nodes in the input and 4 nodes in the hidden layer and 1 node in the output layer
 #you can add more layers by adding an array to the larger array with a number in it for the number of nodes you want like [[2],[3],[3],[4]]
 #you can set the learning rate and the network's weights and biases after you give it its shape (0.1 is default for learning rate)
 example_neural_network = nn.NeuralNetwork([[2],[4],[1]], learning_rate = 0.2)
