@@ -2,10 +2,13 @@ import matrix2d
 import math
 
 class NeuralNetwork:
-    def __init__(self, shape, learning_rate = 0.1, data = [[],[]]):
+    def __init__(self, shape, learning_rate = 0.1, data = [[],[]], mutation_rate = 0.01):
 
         #get the shape as a two dimensional array
         self.shape = shape
+
+        #save the mutation rate
+        self.mutation_rate = mutation_rate
 
         #get the length of self.shape so we don't need to repeatedly call the len function
         self.len_selfshape = len(self.shape)
@@ -99,6 +102,15 @@ class NeuralNetwork:
         #then the last inputs are inputs to the output
         #returns a two dimensional array with all the data of the matrix
         return inputs.matrix_vector_to_array()
+
+
+    #should randomly add small changes in the the weights and biases of the neural network based on the mutation rate
+    #changes the network itself and does not return a network
+    def mutate(self):
+        for i in range(self.len_selfshape_minus_1):
+            self.bias_matrices[i].mutate(self.mutation_rate)
+            self.weight_matrices[i].mutate(self.mutation_rate)
+
 
     #the train function should use backpropagation and gradient descent to change the weights of the network
     #useful for supervised learning (where you have labels for data)

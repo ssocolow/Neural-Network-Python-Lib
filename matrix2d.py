@@ -33,6 +33,13 @@ class Matrix:
             result.append(self.data[i][0])
         return result
 
+    #add a random number between -0.01 and 0.01 to an element in the matrix if a randomly generated number from 0 to 1 is less than the mutation rate passed in
+    #the -0.01 and 0.01 is arbitray so it should probably be an adjustable variable because it represents how big the mutation will be
+    def mutate(self, mutation_rate):
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if random.uniform(0,1) < mutation_rate:
+                    self.data[i][j] += random.uniform(-0.01, 0.01)
 
     #for matrix multiplied by matrix (matrix multiplication)
     #returns a new result matrix
