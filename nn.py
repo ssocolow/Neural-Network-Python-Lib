@@ -2,7 +2,7 @@ import matrix2d
 import math
 
 class NeuralNetwork:
-    def __init__(self, shape, learning_rate = 0.1, data = [[],[]], mutation_rate = 0.01):
+    def __init__(self, shape, learning_rate = 0.1, data = [[],[]], mutation_rate = 0.05):
 
         #get the shape as a two dimensional array
         self.shape = shape
@@ -86,6 +86,7 @@ class NeuralNetwork:
 
     #lots of matrix math
     #takes the inputs and feeds it through the network
+    #returns the network's output
     def feedforward(self, input_arr):
         #turn the input array into an input matrix
         inputs = matrix2d.Matrix.vectorize(input_arr)
@@ -104,7 +105,7 @@ class NeuralNetwork:
         return inputs.matrix_vector_to_array()
 
 
-    #should randomly add small changes in the the weights and biases of the neural network based on the mutation rate
+    #should randomly add small changes in the weights and biases of the neural network based on the mutation rate
     #changes the network itself and does not return a network
     def mutate(self):
         for i in range(self.len_selfshape_minus_1):
