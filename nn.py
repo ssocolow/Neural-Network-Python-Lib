@@ -109,8 +109,17 @@ class NeuralNetwork:
     #changes the network itself and does not return a network
     def mutate(self):
         for i in range(self.len_selfshape_minus_1):
-            self.bias_matrices[i].mutate(self.mutation_rate)
-            self.weight_matrices[i].mutate(self.mutation_rate)
+            self.bias_matrices[i] = self.bias_matrices[i].mutate(self.mutation_rate)
+            self.weight_matrices[i] = self.weight_matrices[i].mutate(self.mutation_rate)
+
+    #copy the network
+    def copy(self):
+        data = [[],[]]
+        for i in range(self.len_selfshape_minus_1):
+            data[0].append(self.weight_matrices[i].copy())
+            data[1].append(self.bias_matrices[i].copy())
+
+        return NeuralNetwork(self.shape, self.lr, self.mutation_rate, data)
 
 
     #the train function should use backpropagation and gradient descent to change the weights of the network
