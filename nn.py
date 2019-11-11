@@ -113,11 +113,14 @@ class NeuralNetwork:
         return inputs.matrix_vector_to_array()
 
     #should randomly add small changes in the weights and biases of the neural network based on the mutation rate
-    #changes the network itself and does not return a network
+    #returns a copy of the mutated network
     def mutate(self):
-        for i in range(self.len_selfshape_minus_1):
-            self.bias_matrices[i] = self.bias_matrices[i].mutate(self.mutation_rate)
-            self.weight_matrices[i] = self.weight_matrices[i].mutate(self.mutation_rate)
+        c = self.copy()
+        for i in range(c.len_selfshape_minus_1):
+            c.bias_matrices[i] = c.bias_matrices[i].mutate(c.mutation_rate)
+            c.weight_matrices[i] = c.weight_matrices[i].mutate(c.mutation_rate)
+
+        return c
 
     #copy the network
     #why am I using matrix_vector_to_array, the wieght matrices are 2d!
@@ -127,7 +130,7 @@ class NeuralNetwork:
             data[0].append(self.weight_matrices[i].copy().matrix_to_array())
             data[1].append(self.bias_matrices[i].copy().matrix_to_array())
 
-        return NeuralNetwork(self.shape, self.lr, self.mutation_rate, data)
+        return NeuralNetwork(self.shape, learning_rate = self.lr, mutation_rate = self.mutation_rate, data = data)
 
 
     #the train function should use backpropagation and gradient descent to change the weights of the network

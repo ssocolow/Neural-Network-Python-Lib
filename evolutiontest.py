@@ -61,12 +61,13 @@ def epoch():
 for i in range(50):
     epoch()
 
-print(nets[num_of_gens][0].feedforward(house_inputs[0]))
-#progress notes
-#the copy function has a problem, and I can't get the get_data function to work
 
-#have an array with all the outputs
-#have an array with 1 / (target - output)^2 (squared to get rid of sign)
-#have the networks attempt all data
-#with the score array, add them all up and then divide each one by the total for the probablility
-#have an array with numbers equal to the index of the array which has the nets, number of numbers corresponds to the probablility
+print(nets[num_of_gens][0].feedforward(house_inputs[0]))
+# progress notes
+# the copy function has a problem, and I can't get the get_data function to work
+
+# have an array with all the outputs
+# have an array with 1 / (target - output)^2 (squared to get rid of sign)
+# have the networks attempt all data
+# with the score array, add them all up and then divide each one by the total for the probablility
+# have an array with numbers equal to the index of the array which has the nets, number of numbers corresponds to the probablility
