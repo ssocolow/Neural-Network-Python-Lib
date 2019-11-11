@@ -33,6 +33,10 @@ class Matrix:
             result.append(self.data[i][0])
         return result
 
+    #get out the data array
+    def matrix_to_array(self):
+        return self.data
+
     #add a random number (between -1 and 1) * mutation rate to an element in the matrix if a randomly generated number from 0 to 1 is less than the mutation rate passed in
     #should return a new matrix
     def mutate(self, mutation_rate):
@@ -42,6 +46,7 @@ class Matrix:
                 if random.uniform(0,1) < mutation_rate:
                     copy.data[i][j] += random.uniform(-1,1) * mutation_rate
         return copy
+
 
     #for matrix multiplied by matrix (matrix multiplication)
     #returns a new result matrix
