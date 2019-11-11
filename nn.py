@@ -7,11 +7,11 @@ class NeuralNetwork:
         #get the shape as a two dimensional array
         self.shape = shape
 
-        #save the mutation rate
-        self.mutation_rate = mutation_rate
-
         #get the length of self.shape so we don't need to repeatedly call the len function
         self.len_selfshape = len(self.shape)
+
+        #save the mutation rate
+        self.mutation_rate = mutation_rate
 
         #save these so we don't need to keep performing operations which will always have constant value
         self.len_selfshape_minus_1 = self.len_selfshape - 1
@@ -84,9 +84,17 @@ class NeuralNetwork:
         #we need to use the last weights of the network first so we can backpropagate the error
         self.weight_matrices_transposed.reverse()
 
+    #get an array with the neural network's data
+    def get_data(self):
+        data = [[],[]]
+        for i in range(self.len_selfshape_minus_1):
+            data[0].append(self.weight_matrices[i].matrix_to_array())
+            data[1].append(self.bias_matrices[i].matrix_to_array())
+
+        return data
+
     #lots of matrix math
     #takes the inputs and feeds it through the network
-    #returns the network's output
     def feedforward(self, input_arr):
         #turn the input array into an input matrix
         inputs = matrix2d.Matrix.vectorize(input_arr)
@@ -104,7 +112,6 @@ class NeuralNetwork:
         #returns a two dimensional array with all the data of the matrix
         return inputs.matrix_vector_to_array()
 
-
     #should randomly add small changes in the weights and biases of the neural network based on the mutation rate
     #changes the network itself and does not return a network
     def mutate(self):
@@ -113,11 +120,12 @@ class NeuralNetwork:
             self.weight_matrices[i] = self.weight_matrices[i].mutate(self.mutation_rate)
 
     #copy the network
+    #why am I using matrix_vector_to_array, the wieght matrices are 2d!
     def copy(self):
         data = [[],[]]
         for i in range(self.len_selfshape_minus_1):
-            data[0].append(self.weight_matrices[i].copy())
-            data[1].append(self.bias_matrices[i].copy())
+            data[0].append(self.weight_matrices[i].copy().matrix_to_array())
+            data[1].append(self.bias_matrices[i].copy().matrix_to_array())
 
         return NeuralNetwork(self.shape, self.lr, self.mutation_rate, data)
 
