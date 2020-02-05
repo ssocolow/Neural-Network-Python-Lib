@@ -22,6 +22,15 @@ class NeuralNetwork:
         def sigmoid(x):
             return 1 / (1 + math.exp(-x))
 
+        def nothing(x):
+            return x
+
+        def relu(x):
+            if x <= 0:
+                return 0
+            else:
+                return x
+
         # #this should really be return sigmoid(x) * (1- sigmoid(x))
         # #but the output of each layer has already been fed through the sigmoid function
         def dsigmoid(y):
@@ -30,7 +39,7 @@ class NeuralNetwork:
         # def twice(x):
         #     return x*2
 
-        self.activation_function = sigmoid
+        self.activation_function = relu
         self.activation_function_derivative = dsigmoid
 
         #set the learning rate

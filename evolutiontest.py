@@ -34,7 +34,7 @@ def epoch():
     #fill the first array in nets with randomly initialized neural nets
     if num_of_gens == 0:
         for i in range(POPSIZE):
-            nets[0].append(nn.NeuralNetwork([[3],[4],[1]], mutation_rate = 0.25))
+            nets[0].append(nn.NeuralNetwork([[3],[4],[1]], mutation_rate = 0.1))
 
     for i in range(POPSIZE):
         #get the score of each network by finding absolute value of the difference between the network's output and the target
@@ -58,10 +58,11 @@ def epoch():
 
     num_of_gens += 1
 
-for i in range(50):
+for i in range(100):
     epoch()
 
 
+print(nets[0][0].feedforward(house_inputs[0]))
 print(nets[num_of_gens][0].feedforward(house_inputs[0]))
 # progress notes
 # the copy function has a problem, and I can't get the get_data function to work
