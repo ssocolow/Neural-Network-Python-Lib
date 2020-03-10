@@ -93,6 +93,9 @@ class NeuralNetwork:
         #we need to use the last weights of the network first so we can backpropagate the error
         self.weight_matrices_transposed.reverse()
 
+        #has a probability of being picked when used with a genetic algorithm
+        self.probability = None
+
     #get an array with the neural network's data
     def get_data(self):
         data = [[],[]]
