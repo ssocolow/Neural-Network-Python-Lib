@@ -39,7 +39,7 @@ class NeuralNetwork:
         # def twice(x):
         #     return x*2
 
-        self.activation_function = relu
+        self.activation_function = sigmoid
         self.activation_function_derivative = dsigmoid
 
         #set the learning rate
