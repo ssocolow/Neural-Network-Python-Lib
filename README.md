@@ -1,5 +1,5 @@
 # Neural-Network-Python-Lib
-A neural network library implemented in python with support for multiple layers, different activation functions, and gradient descent.
+A neural network library implemented in python with support for multiple layers, different activation functions, gradient descent, genetic algorithms, and neuroevolution.
 Inspired and made possible by The Coding Train's Neural Network playlist and 3 Blue 1 Brown's Neural Network playlist and Tariq Rashid's book "Make Your Own Neural Network":
 
 Coding train:  https://www.youtube.com/playlist?list=PLRqwX-V7Uu6aCibgK1PTWWu9by6XFdCfh  
